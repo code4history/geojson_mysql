@@ -1,0 +1,17 @@
+{
+  "name": "geojson_mysql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "fs-extra": "^11.1.0",
+    "mysql2": "^2.3.3"
+  }
+}
