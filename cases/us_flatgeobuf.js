@@ -1,6 +1,5 @@
 import { geojson as fgb } from 'flatgeobuf';
-import { readFileSync, writeFileSync }  from 'node:fs';
-import path from "node:path";
+import { readFileSync }  from 'node:fs';
 import fs from "fs-extra";
 const buffer = readFileSync('./UScounties.fgb');
 const geojson = fgb.deserialize(new Uint8Array(buffer));
