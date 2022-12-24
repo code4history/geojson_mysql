@@ -29,14 +29,14 @@ export async function us_flatgeobuf(connection) {
   // Select by MBR: (-124.42278337796137, 39.3058971532753) To (-114.7085706097631, 35.73909681729993)
   console.log("Select by MBR: (-124.42278337796137, 39.3058971532753) To (-114.7085706097631, 35.73909681729993)");
   await connection.query('SET @poly2 = ST_SRID(ST_MakeEnvelope(Point(?, ?), Point(?, ?)), 4326)', [-124.42278337796137, 39.3058971532753, -114.7085706097631, 35.73909681729993]);
+  const [buf] = await connection.query('SELECT ST_AsGeoJSON(@poly2) AS geom');
+  // Save MBR as GeoJSON
+  fs.writeJsonSync("./mbrFlatgeobuf.geojson", {type:"Feature", geometry: buf[0]["geom"]});
   const [res1] = await connection.query('SELECT geojson FROM us_flatgeobuf WHERE ST_Within(latlong, @poly2)');
   console.log(`Number of selected features: ${res1.length}`);
-  fs.writeJsonSync("./selectedFlatgeobuf.geojson", {
-    type: "FeatureCollection",
-    name: "pois",
-    crs: {type:"name",properties:{name:"urn:ogc:def:crs:OGC:1.3:CRS84"}},
-    features: res1
-  });
+  // Save result as GeoJSON
+  geojson.features = res1.map((row) => { return row.geojson });
+  fs.writeJsonSync("./selectedFlatgeobuf.geojson", geojson);
 
   // Select by MBR with index
   console.log("EXPLAIN ANALYZE: With index");
